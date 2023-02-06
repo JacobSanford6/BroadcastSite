@@ -2,22 +2,10 @@
     box-sizing: border-box;
 }
 
-html::after{
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(2.5px);
-    pointer-events: none;
-}
-html{
-    background: no-repeat center center fixed;
-    background-image: url('../images/mainbackground.jpg');
-    -webkit-background-size: cover;
-    
-    
-    -moz-background-size: cover;
-    -o-background-size: cover;
+
+body{
+    background: linear-gradient(to right, #EB455F, #BAD7E9);
+    background-position: center;
     background-size: cover;
 }
 
@@ -35,6 +23,17 @@ body{
     z-index: 99;
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
+    left: 25%;
+    top: 25%;
+    width: 50%;
+    height: 50%;
+    
+}
+
+#mainContent header{
+    position: relative;
+    font-size: 5rem;
+    top: -5.5rem;
+    border-bottom: solid .5rem red;
+    width: 20rem;
 }
