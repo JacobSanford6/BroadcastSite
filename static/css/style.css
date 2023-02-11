@@ -64,8 +64,10 @@ header{
     border: none;
     left: 25%;
     width: 50%;
+    height: 25%;
     background-color: #F1828D;
     color: #FEFAD4;
     align-self: center;
     text-align: center;
+    outline: none;
 }

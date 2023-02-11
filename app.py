@@ -1,23 +1,30 @@
 from flask import Flask, render_template, url_for, request
+from flask_socketio import *
 
 app = Flask(__name__)
 
-def handlePost():
-    broadcast = request.args.get('broadcast')
-    
-    if broadcast.strip() != "":
-        return "<header>"+broadcast+"</header>"
+broadcast = "black"
+action = 0
+img = None
 
-    return "<p>Test Get</p>"
+
+def handlePost():
+    global broadcast
+    bc = request.args.get('broadcast')
+    print(bc.strip())
+    if bc.strip() != "":
+        broadcast = bc.strip()
+    return "<p>Thank you</p>"
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        return render_template("index.html")
+        print(broadcast)
+        return render_template("index.html", broadcast=broadcast, action=action, img=img)
     elif request.method == 'POST':
         return handlePost()
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(debug=True)
