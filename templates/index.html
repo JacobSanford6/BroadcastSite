@@ -7,14 +7,13 @@
     </head>
 
     <body>
-
         <header>Welcome.</header>
         <div id="mainContent">
-            
             <h1>Broadcast Message</h1>
             <input type="text" value="{{ broadcast }}" readonly />
-            
-            
+            <p>{{broadcastImage}}</p>
+            <h1>Broadcast Image</h1>
+            <img src="{{url_for('static', filename='broadImage.jpg')}}" />
         </div>
     </body>
 </html>

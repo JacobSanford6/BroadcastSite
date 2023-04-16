@@ -12,7 +12,6 @@
     box-sizing: border-box;
 }
 
-
 body{
     background-color: #8FB9A8;
 }
@@ -27,18 +26,26 @@ body{
     color: #FEFAD4;
 }
 
+img{
+    height: 50%;
+    width: auto;
+    
+    display: inline-block;
+}
+
 #mainContent{
-    position: absolute;
+    position: fixed;
     z-index: 99;
     margin: 0;
     padding: 0;
-    left: 25%;
-    top: 25%;
-    width: 50%;
-    height: 50%;
+    left: 12.5%;
+    top: 12.5%;
+    width: 75%;
+    height: 75%;
     background-color: #FEFAD4;
     border: solid 3px #F1828D;
     padding: 10px;
+    text-align: center;
 }
 
 header{
@@ -53,6 +60,10 @@ header{
 }
 
 #mainContent h1{
+    position: relative;
+    width: 75%;
+    height: 5%;
+    left: 12.5%;
     align-self: center;
     text-align: center;
     color: #F1828D;
@@ -62,7 +73,6 @@ header{
     position: relative;
     font-size: large;
     border: none;
-    left: 25%;
     width: 50%;
     height: 25%;
     background-color: #F1828D;
