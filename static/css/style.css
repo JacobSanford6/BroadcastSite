@@ -46,17 +46,18 @@ img{
     border: solid 3px #F1828D;
     padding: 10px;
     text-align: center;
+    z-index: 1;
+
 }
 
 header{
-    position: absolute;
+    position: fixed;
     font-size: 5rem;
-    width: 50%;
-    height: 10%;
-    top: 15%;
     left: 25%;
-    /*border-bottom: solid .5rem #F1828D;*/
-    width: 20rem;
+    text-align: center;
+    width: 50%;
+    z-index: 2;
+    top: 2.5%;
 }
 
 #mainContent h1{
@@ -80,4 +81,13 @@ header{
     align-self: center;
     text-align: center;
     outline: none;
+}
+
+#headerDiv{
+    width: 100%;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
