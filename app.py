@@ -10,6 +10,7 @@ from pathlib import Path
 
 app = app = Flask(__name__)
 broadcast = "None"
+imageNum = 0
 
 def readXlsx():
     wb_obj = openpyxl.load_workbook( "C:\\Users\\Jake\\chainReactionLinkSite\\static\\schedule.xlsx" )
@@ -22,17 +23,19 @@ def readXlsx():
 
     for row in latestSheet:
         if count == 0:
+            
             count = 1
             continue
         nEmployee = []
         for column in row:
             if column.value != None:
-                if column.value.strip() == "" or column.value.strip() == " ":
+                if column.value.strip() == "":
                     nEmployee.append("X/X")
                 else:
                     nEmployee.append(column.value.strip())
         if len(nEmployee) > 0:
             eTable.append(nEmployee)
+        
     return eTable
 
 def handlePost():
@@ -48,11 +51,16 @@ def handlePost():
     elif len(request.files) > 0:
         localtime = time.localtime()
         timeNum = int( str( localtime.tm_hour+localtime.tm_min ) + str(localtime.tm_min) )
+        global imageNum
 
         if "secret-key" in request.form:
             if "broadcastImage" in request.files and request.form["secret-key"] == str(timeNum):
                 bimg = request.files["broadcastImage"]
-                bimg.save("C:\\Users\\Jake\\chainReactionLinkSite\\static\\broadImage.jpg")
+                bimg.save("C:\\Users\\Jake\\chainReactionLinkSite\\static\\broadImage" + str(imageNum)+".jpg")
+                if imageNum == 0:
+                    imageNum = 1
+                else:
+                    imageNum = 0
                 return "{success:true}"
             else:
                 return "{success:false}"
@@ -62,12 +70,12 @@ def handlePost():
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("index.html", broadcast=broadcast)
+        if imageNum == 1:
+            return render_template("index.html", broadcast=broadcast, bimg="\\static\\broadImage0.jpg")
+        else:
+            return render_template("index.html", broadcast=broadcast, bimg="\\static\\broadImage1.jpg")
     elif request.method == "POST":
         return handlePost()
-
-@app.route("/xlsxFile", methods=["GET", "SET"])
-def xlsxFile():
     if request.method == "GET":
         nDict = {}
 
