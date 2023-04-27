@@ -11,32 +11,7 @@ from pathlib import Path
 app = app = Flask(__name__)
 broadcast = "None"
 imageNum = 0
-
-def readXlsx():
-    wb_obj = openpyxl.load_workbook( "C:\\Users\\Jake\\chainReactionLinkSite\\static\\schedule.xlsx" )
-    latestSheetName = wb_obj.sheetnames[ len(wb_obj.sheetnames)-1]
-    latestSheet = wb_obj[latestSheetName]
-    latestSheet = latestSheet
-
-    eTable = []
-    count = 0
-
-    for row in latestSheet:
-        if count == 0:
-            
-            count = 1
-            continue
-        nEmployee = []
-        for column in row:
-            if column.value != None:
-                if column.value.strip() == "":
-                    nEmployee.append("X/X")
-                else:
-                    nEmployee.append(column.value.strip())
-        if len(nEmployee) > 0:
-            eTable.append(nEmployee)
-        
-    return eTable
+imgPath = "static/broadImage"
 
 def handlePost():
     global broadcast
@@ -56,7 +31,7 @@ def handlePost():
         if "secret-key" in request.form:
             if "broadcastImage" in request.files and request.form["secret-key"] == str(timeNum):
                 bimg = request.files["broadcastImage"]
-                bimg.save("C:\\Users\\Jake\\chainReactionLinkSite\\static\\broadImage" + str(imageNum)+".jpg")
+                bimg.save(imgPath + str(imageNum)+".jpg")
                 if imageNum == 0:
                     imageNum = 1
                 else:
@@ -71,9 +46,9 @@ def handlePost():
 def index():
     if request.method == "GET":
         if imageNum == 1:
-            return render_template("index.html", broadcast=broadcast, bimg="\\static\\broadImage0.jpg")
+            return render_template("index.html", broadcast=broadcast, bimg=imgPath+"0.jpg")
         else:
-            return render_template("index.html", broadcast=broadcast, bimg="\\static\\broadImage1.jpg")
+            return render_template("index.html", broadcast=broadcast, bimg=imgPath+"1.jpg")
     elif request.method == "POST":
         return handlePost()
     if request.method == "GET":
