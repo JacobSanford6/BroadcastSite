@@ -2,17 +2,14 @@ from flask import Flask, render_template, url_for, request
 from waitress import serve
 import json
 import time
-from PIL import Image
-import random
-import os
-import openpyxl
-from pathlib import Path
 
 app = app = Flask(__name__)
 broadcast = "None"
 imageNum = 0
 imgPath = "static/broadImage"
 
+# Handles post requests recieved from clients
+# Returns json success data to client
 def handlePost():
     global broadcast
 
@@ -23,14 +20,18 @@ def handlePost():
             return "{success:true}"
         else:
             return "{success:false}"
+    # If a file was sent...
     elif len(request.files) > 0:
+        # Create server side secret key
         localtime = time.localtime()
         timeNum = int( str( localtime.tm_hour+localtime.tm_min ) + str(localtime.tm_min) )
         global imageNum
 
+        #check to make sure secret keys match
         if "secret-key" in request.form:
             if "broadcastImage" in request.files and request.form["secret-key"] == str(timeNum):
                 bimg = request.files["broadcastImage"]
+                # Switch image name every other time, so laptop knows when to update site
                 bimg.save(imgPath + str(imageNum)+".jpg")
                 if imageNum == 0:
                     imageNum = 1
@@ -42,34 +43,17 @@ def handlePost():
     else:
         return"{success:false}"
 
+# GET and POST requests handler
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
+        # Determine what image to show when website is requeted
         if imageNum == 1:
             return render_template("index.html", broadcast=broadcast, bimg=imgPath+"0.jpg")
         else:
             return render_template("index.html", broadcast=broadcast, bimg=imgPath+"1.jpg")
     elif request.method == "POST":
         return handlePost()
-    if request.method == "GET":
-        nDict = {}
-
-        nArr =readXlsx()
-        
-        nDict["days"] = nArr[0]
-        
-        for row in nArr[1::]:
-            name = row[0].split(" ")[0]
-            if name.strip() == "":
-                name = row[0].split(" ")[1]
-            if name.strip() == "":
-                name = "err"
-            if name != "err":
-                nDict[name] = row[1::]
-
-        return json.dumps(nDict)
-    else:
-        return "{test:'No'}"
 
 if __name__ == "__main__":
     print("Server Launched on Port 5000")
